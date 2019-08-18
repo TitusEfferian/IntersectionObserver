@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+
+        }
+        .io {
+            height:100px;
+            background-color: blue;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+        .box-swipe {
+            width: 60px;
+            height: 60px;
+            background-color: red;
+            left:-100px;
+            position: relative;
+            transition: left 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content"></div>
+    <div class="io" id="io-observer">
+        <div class="box-swipe" id="boxSwipe"></div>
+    </div>
+</body>
+<script>
+    document.getElementById('content').innerHTML = [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12].map(x => {
+        return `<div class="box">${x}</div>`
+    })
+
+    const options = {
+        rootMargin: '0px',
+        threshold: 1.0,
+    }
+
+    const ioObserve = document.getElementById('io-observer')
+    const ioCallback = (entries)=>{
+        entries.forEach(x=>{
+            console.log(x)
+            if(x.isIntersecting){
+                const boxSwipe = document.getElementById('boxSwipe')
+                boxSwipe.style.left=0;
+            }
+            else if(!x.isIntersecting)
+            {
+                const boxSwipe = document.getElementById('boxSwipe')
+                boxSwipe.style.left='-100px';
+                console.log(boxSwipe.style.left)
+            }
+        })
+    }
+
+    const observer = new IntersectionObserver(ioCallback,options)
+    observer.observe(ioObserve)
+</script>
+
+</html>
